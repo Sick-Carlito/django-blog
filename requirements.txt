@@ -1,0 +1,7 @@
+Django>=4.2,<4.3            # The Django web framework (we’ll start the project tomorrow).
+django-environ>=0.11,<1.0   # Reads secrets/env vars from a .env file (keeps secrets out of code).
+Pillow>=10.0,<11.0          # Image processing for uploads/thumbnails used in blog posts.
+psycopg[binary]>=3.1,<4.0   # PostgreSQL driver (modern psycopg3) for production DB.
+whitenoise>=6.6,<7.0        # Serves static files simply; great for basic deployments.
+gunicorn>=22.0,<23.0        # WSGI server commonly used on Linux servers (Render/DO/Heroku).
+django-crispy-forms>=2.1,<3 # Better rendering for forms (auth, comments, etc.).

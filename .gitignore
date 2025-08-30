@@ -1,0 +1,33 @@
+# .gitignore — prevents committing files we don't want in GitHub.
+
+# Virtual environment (local-only Python packages)
+.venv/
+
+# Python cache and compiled bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django collected static files (generated artifacts)
+staticfiles/
+
+# Environment & secrets
+.env
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local database files (only if you ever use SQLite in dev)
+db.sqlite3
+
+# Node modules (if you later add a JS build step)
+node_modules/
+
+# Coverage/testing artifacts
+htmlcov/
+.coverage
