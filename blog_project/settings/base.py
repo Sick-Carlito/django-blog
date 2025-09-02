@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",     # Messaging framework
     "django.contrib.staticfiles",  # Static files handling
     # Third-party & local apps will be appended later (e.g., 'blog', 'crispy_forms')
+    "posts",
 ]
 
 # Middleware stack runs on every request/response
