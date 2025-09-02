@@ -176,6 +176,6 @@ class PostModelTest(TestCase):
         )
 
         # Test reverse relationship (author -> posts)
-        author_posts = author.post_set.all()
-        self.assertIn(post, author_posts, "Post should be accessible from author's post_set.")
+        author_posts = author.posts.all()
+        self.assertIn(post, author_posts, "Post should be accessible from author's posts.")
         self.assertEqual(author_posts.count(), 1, "Author should have exactly one post.")
