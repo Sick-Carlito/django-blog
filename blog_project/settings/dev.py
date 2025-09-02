@@ -6,7 +6,7 @@ Development settings — import everything from base and override safe defaults 
 from .base import *  # noqa: F401,F403  (import all base settings into the local namespace)
 
 # For local dev we want DEBUG True so we get helpful tracebacks & auto-reload
-DEBUG = True
+DEBUG = False
 
 # Allow localhost addresses while developing locally
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
