@@ -9,6 +9,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     # Admin site
     path("admin/", admin.site.urls),
+    path("", include("posts.urls")),     # Include posts app URLs at the site root
 
     # Placeholder for the blog app routes. We will create "blog.urls" later.
     # For now, include an empty placeholder or point to Django's admin root.

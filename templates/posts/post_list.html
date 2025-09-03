@@ -1,0 +1,53 @@
+{# templates/posts/post_list.html #}
+{# This template renders a list of posts, or an empty-state message if none exist. #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blog — Posts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Basic minimal styling for readability (optional) -->
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 2rem; line-height: 1.6; }
+    .post { padding: 1rem 0; border-bottom: 1px solid #eee; }
+    .title { font-size: 1.25rem; margin: 0; }
+    .meta { color: #666; font-size: 0.9rem; margin-top: 0.25rem; }
+    .empty { color: #999; font-style: italic; }
+  </style>
+</head>
+<body>
+
+  <h1>All Posts</h1>
+
+  {# If 'posts' (from context_object_name) has items, render them #}
+  {% if posts %}
+    {% for post in posts %}
+      <article class="post">
+        <h2 class="title">{{ post.title }}</h2>            {# Display the post title #}
+        <p class="meta">
+          by {{ post.author.username }} • {{ post.created_at|date:"M d, Y H:i" }}
+        </p>
+        <p>{{ post.content|truncatewords:30 }}</p>         {# Show a short preview of content #}
+      </article>
+    {% endfor %}
+
+    {# Optional: primitive pagination controls if paginate_by is set #}
+    {% if is_paginated %}
+      <nav aria-label="Pagination">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+      </nav>
+    {% endif %}
+
+  {% else %}
+    <p class="empty">No posts yet. Come back later.</p>   {# Empty-state text checked by tests #}
+  {% endif %}
+
+</body>
+</html>
