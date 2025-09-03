@@ -1,0 +1,29 @@
+{# templates/posts/post_detail.html #}
+{# Renders a single Post identified by slug. #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ post.title }} — Blog</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: system-ui, -apple-system, Roboto, Arial, sans-serif; margin: 2rem; line-height: 1.6; }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .content { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+  <article>
+    <h1>{{ post.title }}</h1>
+    <p class="meta">by {{ post.author.username }} • {{ post.created_at|date:"M d, Y H:i" }}</p>
+    <div class="content">
+      {{ post.content|linebreaks }}
+    </div>
+  </article>
+
+  <p><a href="{% url 'posts:post-list' %}">← Back to all posts</a></p>
+
+</body>
+</html>

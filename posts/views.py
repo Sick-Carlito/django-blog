@@ -1,19 +1,28 @@
 # posts/views.py
 # Views for the 'posts' app.
 
-from django.views.generic import ListView           # Generic class-based view for listing objects
-from .models import Post                            # Import the Post model we want to list
+from django.views.generic import ListView, DetailView  # Generic views for list and detail pages
+from .models import Post                              # Import Post model to be used by the views
 
 
 class PostListView(ListView):
     """
-    Displays a list of Post objects.
-    Uses the template 'posts/post_list.html' and exposes the queryset as 'posts' in the context.
+    Displays a paginated list of Post objects.
+    (Already implemented on Day 8)
     """
-    model = Post                                    # Tells ListView which model to query (Post.objects.all())
-    template_name = "posts/post_list.html"          # Explicit template path to render
-    context_object_name = "posts"                   # Add 'posts' to context in addition to the default 'object_list'
-    paginate_by = 10                                # Optional: paginate results 10 per page (safe to keep now)
+    model = Post
+    template_name = "posts/post_list.html"
+    context_object_name = "posts"
+    paginate_by = 10
 
-    # NOTE: default ordering comes from Post.Meta.ordering = ["-created_at"], so newest is first.
-    # If you wanted to enforce here, you could override get_queryset() and order_by('-created_at').
+
+class PostDetailView(DetailView):
+    """
+    Displays a single Post instance identified by its slug.
+    DetailView looks up the object and adds it to the template context.
+    """
+    model = Post                              # Which model to query
+    template_name = "posts/post_detail.html"  # Template to render for the detail view
+    context_object_name = "post"              # In template, use 'post' rather than 'object'
+    slug_field = "slug"                       # Model field used to look up the object
+    slug_url_kwarg = "slug"                   # URL kwarg name expected (e.g., path('<slug:slug>/'))
