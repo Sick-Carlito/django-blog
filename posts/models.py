@@ -3,6 +3,7 @@
 
 from django.db import models                       # Base ORM fields and model classes
 from django.conf import settings                   # Access to project settings (AUTH_USER_MODEL)
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -51,3 +52,9 @@ class Post(models.Model):
         Return the title for readable representations (admin lists, logs, etc.).
         """
         return self.title
+    
+    def get_absolute_url(self):
+        """
+        Returns canonical URL for this Post (used by CreateView redirects).
+        """
+        return reverse("posts:post-detail", kwargs={"slug": self.slug})
