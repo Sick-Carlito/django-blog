@@ -7,6 +7,17 @@
   <meta charset="utf-8">
   <title>{{ post.title }} — Blog</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  {# Canonical URL #}
+  <link rel="canonical" href="http://{{ request.get_host }}{% url 'posts:post-detail' slug=post.slug %}">
+
+  {# SEO meta description (first 150 chars of content) #}
+  <meta name="description" content="{{ post.content|truncatechars:150 }}">
+
+  {# Open Graph tags for sharing #}
+  <meta property="og:title" content="{{ post.title }}">
+  <meta property="og:description" content="{{ post.content|truncatechars:150 }}">
+
   <style>
     body { font-family: system-ui, -apple-system, Roboto, Arial, sans-serif; margin: 2rem; line-height: 1.6; }
     .meta { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
