@@ -14,6 +14,8 @@ urlpatterns = [
     # Placeholder for the blog app routes. We will create "blog.urls" later.
     # For now, include an empty placeholder or point to Django's admin root.
     # path("", include("blog.urls")),
+    # Add Django's built-in authentication URLs (login/logout/password)
+    path("accounts/", include("django.contrib.auth.urls")),
 ]
 
 # During local development (DEBUG=True) serve media files from MEDIA_URL

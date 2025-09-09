@@ -1,7 +1,7 @@
 # posts/views.py
 # Views for the 'posts' app.
 
-from django.views.generic import ListView, DetailView,CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
@@ -80,3 +80,39 @@ class PostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         After creation, redirect to the new post's detail page.
         """
         return self.object.get_absolute_url()      # use Post.get_absolute_url()
+    
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """
+    UpdateView for editing an existing Post.
+    Access rules:
+      - anonymous users -> redirected to login (LoginRequiredMixin)
+      - logged-in users who are NOT the author -> 403 (raise_exception=True)
+      - the author (request.user == post.author) can edit the post
+    """
+
+    model = Post                                       # which model to update
+    fields = ["title", "slug", "content"]              # fields displayed in the form
+    template_name = "posts/post_form.html"             # reuse the create form template
+    context_object_name = "form"                       # tests look for 'form' in context
+                                # return 403 for logged-in users failing test_func
+
+    def test_func(self):
+        """
+        Return True only if the logged-in user is the author of the post.
+        self.get_object() returns the Post instance being edited.
+        """
+        post = self.get_object()                       # retrieve the Post instance
+        return self.request.user == post.author        # True only if same user
+
+    def form_valid(self, form):
+        """
+        Optionally ensure author isn't changed. We keep author intact.
+        """
+        form.instance.author = self.get_object().author
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        """
+        Redirect to the post detail page after a successful update.
+        """
+        return self.object.get_absolute_url()
