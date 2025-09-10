@@ -1,7 +1,7 @@
 # posts/views.py
 # Views for the 'posts' app.
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
@@ -116,3 +116,26 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         Redirect to the post detail page after a successful update.
         """
         return self.object.get_absolute_url()
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """
+    DeleteView for removing a Post instance.
+    Access rules:
+      - anonymous -> redirected to login (LoginRequiredMixin)
+      - logged-in non-author -> HTTP 403 (raise_exception=True)
+      - author -> may delete the post
+    """
+
+    model = Post                                      # The model to delete
+    template_name = "posts/post_confirm_delete.html"  # Confirmation template
+    context_object_name = "post"                      # Template variable name for the object
+    success_url = reverse_lazy("posts:post-list")     # Redirect after successful delete
+   # raise_exception = True                            # Authenticated users who fail test_func get 403
+
+    def test_func(self):
+        """
+        Allow only the author to delete the post.
+        self.get_object() returns the Post instance being deleted.
+        """
+        post = self.get_object()
+        return self.request.user == post.author
