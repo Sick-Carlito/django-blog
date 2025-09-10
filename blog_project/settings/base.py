@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",  # Static files handling
     # Third-party & local apps will be appended later (e.g., 'blog', 'crispy_forms')
     "posts",
+    "accounts",    # <- newly added accounts app
 ]
 
 # Middleware stack runs on every request/response
