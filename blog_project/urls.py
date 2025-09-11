@@ -9,14 +9,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     # Admin site
     path("admin/", admin.site.urls),
-    path("accounts/", include("accounts.urls")),                 # includes accounts:register
-    path("", include("posts.urls")),     # Include posts app URLs at the site root
-
-    # Placeholder for the blog app routes. We will create "blog.urls" later.
-    # For now, include an empty placeholder or point to Django's admin root.
-    # path("", include("blog.urls")),
+    path("accounts/", include("accounts.urls", namespace="accounts")),                 # includes accounts:register
     # Add Django's built-in authentication URLs (login/logout/password)
     path("accounts/", include("django.contrib.auth.urls")),
+    path("", include("posts.urls")),     # Include posts app URLs at the site root
 ]
 
 # During local development (DEBUG=True) serve media files from MEDIA_URL

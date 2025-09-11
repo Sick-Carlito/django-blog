@@ -61,3 +61,26 @@ class AccountsRegistrationTests(TestCase):
 
         # The client session should now have an authenticated user id (logged in)
         self.assertIn("_auth_user_id", self.client.session)
+    
+    def test_register_redirects_to_post_list(self):
+        """
+        Test that registering a new user redirects to the post list page.
+        """
+        response = self.client.post(
+            reverse("accounts:register"),   # <-- use namespace now
+            {
+                "username": "testuser",
+                "password1": "StrongPass123!",
+                "password2": "StrongPass123!",
+            },
+            follow=True,  # follow redirects
+        )
+
+        # Check that user was created
+        self.assertTrue(User.objects.filter(username="testuser").exists())
+
+        # Confirm redirect chain contains posts:post-list
+        self.assertRedirects(response, reverse("posts:post-list"))
+
+        # Confirm user is logged in
+        self.assertTrue(response.context["user"].is_authenticated)

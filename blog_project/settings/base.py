@@ -114,3 +114,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Redirect after successful login
+LOGIN_REDIRECT_URL = "posts:post-list"
