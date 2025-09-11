@@ -17,3 +17,10 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Optionally add development-specific apps (debug toolbar etc.) here:
 # INSTALLED_APPS += ["debug_toolbar"]
 # MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
+
+# Where to redirect after successful login
+LOGIN_REDIRECT_URL = "/"
+# Where to redirect after logout
+LOGOUT_REDIRECT_URL = "/"
+# Login page (for LoginRequiredMixin and other redirects)
+LOGIN_URL = "/accounts/login/"

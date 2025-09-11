@@ -115,5 +115,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Redirect after successful login
-LOGIN_REDIRECT_URL = "posts:post-list"
+# Where to redirect after successful login
+LOGIN_REDIRECT_URL = "/"
+# Where to redirect after logout
+LOGOUT_REDIRECT_URL = "/"
+# Login page (for LoginRequiredMixin and other redirects)
+LOGIN_URL = "/accounts/login/"
