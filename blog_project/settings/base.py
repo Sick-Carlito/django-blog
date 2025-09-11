@@ -121,3 +121,5 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 # Login page (for LoginRequiredMixin and other redirects)
 LOGIN_URL = "/accounts/login/"
+# Use in-memory email backend for development & tests so emails are captured in django.core.mail.outbox
+EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
