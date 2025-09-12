@@ -5,3 +5,4 @@ psycopg[binary]>=3.1,<4.0   # PostgreSQL driver (modern psycopg3) for production
 whitenoise>=6.6,<7.0        # Serves static files simply; great for basic deployments.
 gunicorn>=22.0,<23.0        # WSGI server commonly used on Linux servers (Render/DO/Heroku).
 django-crispy-forms>=2.1,<3 # Better rendering for forms (auth, comments, etc.).
+pillow==10.4.0
