@@ -1,8 +1,6 @@
 # accounts/urls.py
-"""
-URL routes for accounts app: register, login, logout.
-We use Django's built-in auth views for login/logout and a custom register view.
-"""
+# URL routes for accounts app: registration, login, logout,
+# password reset and password change using Django's built-in auth views.
 
 from django.urls import path
 from django.contrib.auth import views as auth_views
@@ -12,8 +10,10 @@ from django.urls import reverse_lazy
 app_name = "accounts"
 
 urlpatterns = [
+    # Registration
     path("register/", register_view, name="register"),
-    # Use builtin LoginView and LogoutView but keep templates in registration/
+
+    # Login / Logout (we already used these)
     path(
         "login/",
         auth_views.LoginView.as_view(template_name="registration/login.html"),
@@ -21,11 +21,11 @@ urlpatterns = [
     ),
     path(
         "logout/",
-        auth_views.LogoutView.as_view(next_page="/"),
+        auth_views.LogoutView.as_view(next_page=reverse_lazy("posts:post-list")),
         name="logout",
     ),
 
-# Password reset process:
+    # Password reset process:
     # 1) password_reset - form to input email
     path(
         "password_reset/",

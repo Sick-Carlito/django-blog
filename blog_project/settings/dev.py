@@ -14,7 +14,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 # Use the console email backend for dev so emails are printed to terminal rather than sent
 #EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Use in-memory email backend for development & tests so emails are captured in django.core.mail.outbox
-EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Optionally add development-specific apps (debug toolbar etc.) here:
 # INSTALLED_APPS += ["debug_toolbar"]
@@ -25,4 +25,4 @@ LOGIN_REDIRECT_URL = "/"
 # Where to redirect after logout
 LOGOUT_REDIRECT_URL = "/"
 # Login page (for LoginRequiredMixin and other redirects)
-LOGIN_URL = "/accounts/login/"
+#LOGIN_URL = "/accounts/login/"
