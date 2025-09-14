@@ -4,7 +4,7 @@
 
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import register_view
+from .views import register_view, ProfileUpdateView
 from django.urls import reverse_lazy
 
 app_name = "accounts"
@@ -79,4 +79,5 @@ urlpatterns = [
         ),
         name="password_change_done",
     ),
+    path("profile/edit/", ProfileUpdateView.as_view(), name="profile-update"),
 ]

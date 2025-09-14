@@ -7,6 +7,7 @@ an email field and validating its uniqueness.
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
+from .models import Profile                                                          # import the Profile model
 
 User = get_user_model()
 
@@ -29,3 +30,17 @@ class RegistrationForm(UserCreationForm):
         if email and User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError("A user with that email already exists.")
         return email
+
+
+class ProfileForm(forms.ModelForm):
+    """
+    ModelForm for Profile with avatar and bio fields.
+    - We keep avatar optional in form; users may update bio only.
+    """
+    class Meta:
+        model = Profile                 # model to build form from
+        fields = ["avatar", "bio"]      # exposed fields in the form
+        # Optionally, you can customize widgets or labels here:
+        widgets = {
+            "bio": forms.Textarea(attrs={"rows": 4, "cols": 40}),
+        }

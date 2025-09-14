@@ -1,0 +1,20 @@
+{# templates/accounts/profile_form.html #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edit Profile</title>
+</head>
+<body>
+  <h1>Edit your profile</h1>
+
+  {# Use multipart form because avatar is a file upload #}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save changes</button>
+  </form>
+
+  <p><a href="{% url 'posts:post-list' %}">Back to posts</a></p>
+</body>
+</html>
