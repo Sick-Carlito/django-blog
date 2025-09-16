@@ -11,7 +11,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls", namespace="accounts")),                 # includes accounts:register
     # Add Django's built-in authentication URLs (login/logout/password)
-    path("accounts/", include("django.contrib.auth.urls")),
+    #path("accounts/", include("django.contrib.auth.urls")),
     path("", include("posts.urls", namespace="posts")),     # Include posts app URLs at the site root
 ]
 

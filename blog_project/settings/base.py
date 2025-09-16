@@ -108,6 +108,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # Additional static sources for development
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
+
 # Media files (user-uploaded content)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
