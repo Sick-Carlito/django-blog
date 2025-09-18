@@ -46,11 +46,16 @@ class AccountsRegistrationTests(TestCase):
         url = reverse("accounts:register")
         form_data = {
             "username": "newuser",
+            "email": "newuser@example.com",
             "password1": "safe_password_123",
             "password2": "safe_password_123",
         }
         # POST and follow redirect so the client ends up on the final page
         response = self.client.post(url, data=form_data, follow=True)
+
+        # Debug output
+        if response.context and 'form' in response.context:
+            print(f"Form errors: {response.context['form'].errors}")
 
         # HTTP 200 after following redirect(s)
         self.assertEqual(response.status_code, 200)
@@ -70,6 +75,7 @@ class AccountsRegistrationTests(TestCase):
             reverse("accounts:register"),   # <-- use namespace now
             {
                 "username": "testuser",
+                "email": "testuser@example.com",
                 "password1": "StrongPass123!",
                 "password2": "StrongPass123!",
             },

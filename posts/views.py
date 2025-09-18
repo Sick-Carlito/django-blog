@@ -94,7 +94,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     fields = ["title", "slug", "content"]              # fields displayed in the form
     template_name = "posts/post_form.html"             # reuse the create form template
     context_object_name = "form"                       # tests look for 'form' in context
-                                # return 403 for logged-in users failing test_func
+    raise_exception = True                            # return 403 for logged-in users failing test_func
 
     def test_func(self):
         """
@@ -103,6 +103,22 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         """
         post = self.get_object()                       # retrieve the Post instance
         return self.request.user == post.author        # True only if same user
+    
+    def handle_no_permission(self):
+        """
+        Handle permission denied. Redirect anonymous users to login,
+        return 403 for authenticated users who aren't the author.
+        """
+        if not self.request.user.is_authenticated:
+            # Anonymous user - redirect to login
+            return redirect_to_login(
+                self.request.get_full_path(),
+                self.get_login_url(),
+                self.get_redirect_field_name()
+            )
+        else:
+            # Authenticated but not the author - return 403
+            return HttpResponseForbidden()
 
     def form_valid(self, form):
         """
@@ -130,7 +146,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = "posts/post_confirm_delete.html"  # Confirmation template
     context_object_name = "post"                      # Template variable name for the object
     success_url = reverse_lazy("posts:post-list")     # Redirect after successful delete
-   # raise_exception = True                            # Authenticated users who fail test_func get 403
+    #raise_exception = True                            # Authenticated users who fail test_func get 403
 
     def test_func(self):
         """
@@ -139,3 +155,19 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """
         post = self.get_object()
         return self.request.user == post.author
+    
+    def handle_no_permission(self):
+        """
+        Handle permission denied. Redirect anonymous users to login,
+        return 403 for authenticated non-authors.
+        """
+        if not self.request.user.is_authenticated:
+            # Anonymous user - redirect to login
+            return redirect_to_login(
+                self.request.get_full_path(),
+                self.get_login_url(),
+                self.get_redirect_field_name()
+            )
+        else:
+            # Authenticated but not the author - return 403
+            return HttpResponseForbidden()
