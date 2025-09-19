@@ -1,16 +1,19 @@
 # posts/admin.py
-# Register Post in Django admin to create/edit posts via the admin UI.
+from django.contrib import admin
+from .models import Post, Category
 
-from django.contrib import admin         # Admin site registration utilities
-from .models import Post                 # Import the Post model we created
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    # show name and slug in list view and enable search
+    list_display = ("name", "slug")
+    search_fields = ("name", "slug")
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    """
-    Customizes how Post appears in the admin list and edit pages.
-    """
-    list_display = ("title", "slug", "author", "created_at", "updated_at")  # Columns in list view
-    list_filter = ("author", "created_at")                                   # Sidebar filters
-    search_fields = ("title", "content", "slug")                             # Searchable fields
-    prepopulated_fields = {"slug": ("title",)}                               # Auto-fill slug from title (optional)
+    # show key fields in admin list view
+    list_display = ("title", "author", "created_at")
+    prepopulated_fields = {"slug": ("title",)}  # auto-fill slug from title in admin
+    search_fields = ("title", "content", "author__username")
+    # allow selecting many-to-many categories in the admin list form
+    filter_horizontal = ("categories",)
