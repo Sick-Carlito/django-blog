@@ -17,6 +17,7 @@ class Category(models.Model):
     # slug used in URLs; unique to allow reverse lookups like /category/<slug>/
     slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField(blank=True, default="")
+    
 
     class Meta:
         verbose_name_plural = "categories"
@@ -27,6 +28,15 @@ class Category(models.Model):
         Return a readable representation used in admin and debugging.
         """
         return self.name
+    
+    def save(self, *args, **kwargs):
+        """
+        Auto-generate slug from name if not provided.
+        """
+        if not self.slug:
+            from django.utils.text import slugify
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         """
@@ -44,6 +54,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     content = models.TextField()
+    categories = models.ManyToManyField(Category, blank=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posts"
     )

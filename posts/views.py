@@ -6,7 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
 from django.contrib.auth.views import redirect_to_login
-from .models import Post
+from .models import Post, Category
+from django.shortcuts import get_object_or_404
 
 
 class PostListView(ListView):
@@ -171,3 +172,18 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         else:
             # Authenticated but not the author - return 403
             return HttpResponseForbidden()
+        
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'posts/category_list.html'
+    context_object_name = 'categories'
+
+class CategoryDetailView(DetailView):
+    model = Category
+    template_name = 'posts/category_detail.html'
+    context_object_name = 'category'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.filter(categories=self.object)
+        return context

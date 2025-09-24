@@ -34,6 +34,14 @@
     </div>
   </article>
 
+  <p>Categories:
+    {% for category in post.categories.all %}
+      <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+    {% empty %}
+      None
+    {% endfor %}
+  </p>
+
   <p><a href="{% url 'posts:post-list' %}">← Back to all posts</a></p>
 
 </body>
