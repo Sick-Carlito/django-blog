@@ -1,6 +1,13 @@
 # posts/admin.py
 from django.contrib import admin
-from .models import Post, Category
+from .models import Post, Category, Tag
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    # show name and slug in the admin list
+    list_display = ("name", "slug")
+    prepopulated_fields = {"slug": ("name",)}  # optional: auto-fill slug from name
+    search_fields = ("name",)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -16,4 +23,4 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}  # auto-fill slug from title in admin
     search_fields = ("title", "content", "author__username")
     # allow selecting many-to-many categories in the admin list form
-    filter_horizontal = ("categories",)
+    filter_horizontal = ("categories","tags")

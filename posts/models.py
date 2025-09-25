@@ -5,6 +5,35 @@ from django.conf import settings                     # access AUTH_USER_MODEL
 from django.urls import reverse                       # optional helper for get_absolute_url
 from django.utils.text import slugify                 # helper if you auto-slug (optional)
 
+class Tag(models.Model):
+    """
+    Tag model for simple labeling of posts.
+    """
+    name = models.CharField(
+        max_length=100,
+        unique=True,               # each tag name is unique
+        help_text="Tag name (e.g., 'django')"
+    )
+    slug = models.SlugField(
+        max_length=100,
+        unique=True,
+        blank=True,                # allow blank so we can auto-generate
+        help_text="URL-friendly identifier (auto-generated if left blank)"
+    )
+
+    def __str__(self):
+        # human readable representation
+        return self.name
+
+    def save(self, *args, **kwargs):
+        # if slug is empty, generate it from name (machine-friendly)
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        # optional: page showing posts with this tag
+        return reverse("posts:tag-detail", kwargs={"slug": self.slug})
 
 class Category(models.Model):
     """
@@ -60,6 +89,13 @@ class Post(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+     # MANY-TO-MANY: tags
+    tags = models.ManyToManyField(
+        Tag,
+        related_name="posts",           # allows reverse lookup: tag.posts.all()
+        blank=True                      # allow posts to have no tags
+    )
 
     # NEW: many-to-many relation to Category.
     # - blank=True allows posts without categories

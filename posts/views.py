@@ -38,7 +38,7 @@ class PostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     - UserPassesTestMixin with test_func ensures only staff users pass (else 403).
     """
     model = Post                                   # model to create
-    fields = ["title", "slug", "content", "categories"]          # form fields to expose
+    fields = ["title", "slug", "content", "categories", "Tags"]          # form fields to expose
     template_name = "posts/post_form.html"         # template used to render the form
     context_object_name = "form"                   # ensure 'form' key exists in context for tests
 
@@ -92,7 +92,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """
 
     model = Post                                       # which model to update
-    fields = ["title", "slug", "content", "categories"]              # fields displayed in the form
+    fields = ["title", "slug", "content", "categories", "Tags"]              # fields displayed in the form
     template_name = "posts/post_form.html"             # reuse the create form template
     context_object_name = "form"                       # tests look for 'form' in context
     raise_exception = True                            # return 403 for logged-in users failing test_func
